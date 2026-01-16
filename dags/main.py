@@ -2,8 +2,16 @@ from airflow import DAG
 import pendulum 
 from datetime import datetime, timedelta
 from api.chess_profile import player_details, save_to_json
+from airflow.decorators import dag, task
+from airflow.models import Variable
+from datawarehouse.dwh import staging_table
 
 local_time = pendulum.timezone("Europe/Budapest")
+
+USERNAMES = Variable.get(
+    "chess_usernames",
+    default_var="barrotelli,sousa16"
+).split(",")
 
 default_args = {
     "owner": "airflow",
@@ -24,12 +32,24 @@ with DAG(
     default_args=default_args,
     description="DAG to fetch chess.com profile data and save as JSON",
     schedule = "0 2 * * *",
-    catchup = False,
+    catchup = False
 ) as dag:
     
-    player_data = player_details()
+    player_data = player_details(usernames=USERNAMES)
     save_json = save_to_json(player_data)
 
     # Define task dependencies
     player_data >> save_json
+    
+with DAG(
+    dag_id = "update_db_chess",
+    default_args=default_args,
+    description="DAG to process JSON file and insert data into staging schema (future do core schema)",
+    schedule = "0 15 * * *",
+    catchup = False
+) as dag:
+    update_staging = staging_table()
+    #later add other layers
+    # Define task dependencies
+    
     

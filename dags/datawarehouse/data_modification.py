@@ -84,4 +84,4 @@ def delete_rows(cur, conn, schema, player_id):
         logger.info(f"✅ Row with player_id {player_id} deleted successfully from {schema}.{table}")
     except Exception as e:
         logger.error(f"❌ Error deleting row with player_id {player_id} from {schema}.{table}: {e}")
-        raise e
+        raise e 

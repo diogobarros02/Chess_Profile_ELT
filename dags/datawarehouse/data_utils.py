@@ -37,7 +37,7 @@ def create_table(schema):
             username VARCHAR UNIQUE,
             followers INT,
             country_url TEXT,
-            last_online TIMESTAMP,
+            last_online INT,
             joined TIMESTAMP,
             status VARCHAR,
             is_streamer BOOLEAN,

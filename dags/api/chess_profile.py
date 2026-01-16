@@ -8,34 +8,40 @@ from datetime import date
 from airflow.decorators import dag, task
 from airflow.models import Variable
 
-USERNAME = Variable.get("chess_username", default_var="barrotelli")
+USERNAMES = Variable.get(
+    "chess_usernames",
+    default_var="barrotelli,sousa16"
+).split(",")
 
 @task
-def player_details():
-    url = f"https://api.chess.com/pub/player/{USERNAME}"
+def player_details(usernames: list[str]):
     headers = {"User-Agent": "ChessDataPipeline/1.0"}
+    players = []
 
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
+    for username in usernames:
+        url = f"https://api.chess.com/pub/player/{username}"
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        players.append(response.json())
 
-    return response.json()
+    return players
 
 
 @task
-def save_to_json(player_data):
+def save_to_json(players: list[dict]):
     os.makedirs("/opt/airflow/data", exist_ok=True)
 
-    file_path = f"/opt/airflow/data/{USERNAME}_{date.today()}.json"
+    file_path = f"/opt/airflow/data/chess_players_{date.today()}.json"
 
     with open(file_path, "w", encoding="utf-8") as json_file:
-        json.dump(player_data, json_file, ensure_ascii=False, indent=4)
+        json.dump(players, json_file, ensure_ascii=False, indent=4)
+
+    return file_path
 
 
 
 if __name__ == "__main__":
     load_dotenv()
-
-    username = "barrotelli"
 
     os.makedirs("./data", exist_ok=True)
 
