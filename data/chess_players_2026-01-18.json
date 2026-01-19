@@ -1,0 +1,35 @@
+[
+    {
+        "player_id": 104521262,
+        "@id": "https://api.chess.com/pub/player/barrotelli",
+        "url": "https://www.chess.com/member/Barrotelli",
+        "name": "Diogo Barros",
+        "username": "barrotelli",
+        "followers": 55,
+        "country": "https://api.chess.com/pub/country/PT",
+        "last_online": 1768674385,
+        "joined": 1608038812,
+        "status": "basic",
+        "is_streamer": false,
+        "verified": false,
+        "league": "Legend",
+        "streaming_platforms": []
+    },
+    {
+        "avatar": "https://images.chesscomfiles.com/uploads/v1/user/52424298.0a34d168.200x200o.608c6cf804f6.jpg",
+        "player_id": 52424298,
+        "@id": "https://api.chess.com/pub/player/sousa16",
+        "url": "https://www.chess.com/member/sousa16",
+        "name": "João Sousa",
+        "username": "sousa16",
+        "followers": 31,
+        "country": "https://api.chess.com/pub/country/PT",
+        "last_online": 1768739216,
+        "joined": 1543340569,
+        "status": "basic",
+        "is_streamer": false,
+        "verified": false,
+        "league": "Legend",
+        "streaming_platforms": []
+    }
+]

@@ -1,11 +1,11 @@
 import logging
 
 logger = logging.getLogger(__name__)
-table = "chess_api"
+table = "player_details"
 
 def insert_rows(cur,conn,schema,row):
     try:
-        if schema == 'staging':
+        if schema == 'silver':
             player_id = 'player_id'
             cur.execute(
                 f"""
@@ -38,7 +38,7 @@ def insert_rows(cur,conn,schema,row):
 
 def update_rows(cur, conn, schema, row):
     try:
-        if schema == 'staging':
+        if schema == 'silver':
             player_id = 'player_id'
             cur.execute(
                 f"""

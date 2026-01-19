@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from api.chess_profile import player_details, save_to_json
 from airflow.decorators import dag, task
 from airflow.models import Variable
-from datawarehouse.dwh import staging_table
+from dags.dwh import silver_table
+from api.player_stats import extract_usernames_from_db, fetch_player_stats, save_raw_stats
 
 local_time = pendulum.timezone("Europe/Budapest")
 
@@ -48,8 +49,18 @@ with DAG(
     schedule = "0 15 * * *",
     catchup = False
 ) as dag:
-    update_staging = staging_table()
+    update_staging = silver_table()
     #later add other layers
     # Define task dependencies
     
-    
+with DAG(
+    dag_id = "players_games_stats",
+    default_args=default_args,
+    description="DAG to fetch chess.com players games and stats",
+    schedule = "0 15 * * *",
+    catchup = False
+ ) as dag :
+    usernames = extract_usernames_from_db()
+    stats = fetch_player_stats(usernames)
+    saved_stats = save_raw_stats(stats)
+    usernames >> stats >> saved_stats    
