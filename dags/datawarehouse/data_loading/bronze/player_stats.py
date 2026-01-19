@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def load_path():
+def load_path_stats():
     file_path = f"/opt/airflow/data/chess_player_stats/{datetime.now().date()}.json"
     try:
         with open(file_path, "r", encoding="utf-8") as raw_data:

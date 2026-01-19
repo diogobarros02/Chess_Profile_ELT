@@ -74,7 +74,7 @@ with DAG(
 
 
 with DAG(
-    dag_id = "profile_update_db_bronze_silver",
+    dag_id = "profile_stats_db_bronze_silver",
     default_args=default_args,
     description="DAG to process JSON file and insert data into bronze layer and silver schema (future do core schema)",
     schedule = "0 15 * * *",

@@ -4,7 +4,7 @@ import logging
 logger = logging.getLogger(__name__)
 table = "player_details"
 
-def insert_raw_row(cur, conn, schema, row):
+def insert_raw_row_stats(cur, conn, schema, row):
     try:
         cur.execute(
             f"""
