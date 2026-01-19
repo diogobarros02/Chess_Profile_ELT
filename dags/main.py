@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from api.chess_profile import player_details, save_to_json
 from airflow.decorators import dag, task
 from airflow.models import Variable
-from dags.dwh import silver_table
+from datawarehouse.dwh.silver.player_details import silver_table
 from api.player_stats import extract_usernames_from_db, fetch_player_stats, save_raw_stats
 
 local_time = pendulum.timezone("Europe/Budapest")

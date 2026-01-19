@@ -1,10 +1,17 @@
 from datawarehouse.data_utils.conn import get_conn_cursor, close_conn_cursor, create_schema
-from datawarehouse.data_modification.bronze.player_details import insert_rows, update_rows, delete_rows
+from datawarehouse.data_utils.silver.player_details import create_table, get_player_ids
+from datawarehouse.data_modification.silver.player_details import insert_rows, update_rows, delete_rows
 from datawarehouse.data_loading.bronze.player_details import load_path
-from dags.datawarehouse.data_transformation.bronze.player_details import country_mapping, transform_data
+from datawarehouse.data_transformation.bronze.player_details import transform_row
 import logging
 from airflow.decorators import dag, task
 from datetime import datetime, timezone
+
+import sys
+import os
+
+# Add the 'datawarehouse' folder to Python path
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
 
 logger = logging.getLogger(__name__)
 table = "player_details"

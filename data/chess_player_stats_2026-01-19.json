@@ -27,8 +27,8 @@
         },
         "chess_rapid": {
             "last": {
-                "rating": 1837,
-                "date": 1768813246,
+                "rating": 1845,
+                "date": 1768818103,
                 "rd": 35
             },
             "best": {
@@ -37,15 +37,15 @@
                 "game": "https://www.chess.com/game/live/59826616345"
             },
             "record": {
-                "win": 1439,
+                "win": 1440,
                 "loss": 1271,
                 "draw": 159
             }
         },
         "chess_bullet": {
             "last": {
-                "rating": 1616,
-                "date": 1767696099,
+                "rating": 1617,
+                "date": 1768816843,
                 "rd": 68
             },
             "best": {
@@ -54,16 +54,16 @@
                 "game": "https://www.chess.com/game/live/64861309945"
             },
             "record": {
-                "win": 1775,
-                "loss": 1718,
+                "win": 1776,
+                "loss": 1719,
                 "draw": 174
             }
         },
         "chess_blitz": {
             "last": {
-                "rating": 1641,
-                "date": 1765806277,
-                "rd": 78
+                "rating": 1620,
+                "date": 1768825079,
+                "rd": 83
             },
             "best": {
                 "rating": 1798,
@@ -72,7 +72,7 @@
             },
             "record": {
                 "win": 2039,
-                "loss": 1990,
+                "loss": 1991,
                 "draw": 234
             }
         },
@@ -145,9 +145,9 @@
         },
         "chess_blitz": {
             "last": {
-                "rating": 1464,
-                "date": 1768767715,
-                "rd": 37
+                "rating": 1458,
+                "date": 1768823603,
+                "rd": 36
             },
             "best": {
                 "rating": 1530,
@@ -155,8 +155,8 @@
                 "game": "https://www.chess.com/game/live/132782980193"
             },
             "record": {
-                "win": 264,
-                "loss": 224,
+                "win": 266,
+                "loss": 227,
                 "draw": 21
             }
         },

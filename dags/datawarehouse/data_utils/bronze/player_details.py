@@ -1,4 +1,4 @@
-from conn import get_conn_cursor, close_conn_cursor
+from datawarehouse.data_utils.conn import get_conn_cursor, close_conn_cursor
 
 table = "player_details"
 
