@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from api.chess_profile import player_details, save_to_json
 from airflow.decorators import dag, task
 from airflow.models import Variable
+from datawarehouse.dwh.bronze.player_details import bronze_table
 from datawarehouse.dwh.silver.player_details import silver_table
 from api.player_stats import extract_usernames_from_db, fetch_player_stats, save_raw_stats
 
@@ -29,7 +30,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id = "produce_json",
+    dag_id = "profile_produce_json",
     default_args=default_args,
     description="DAG to fetch chess.com profile data and save as JSON",
     schedule = "0 2 * * *",
@@ -43,15 +44,16 @@ with DAG(
     player_data >> save_json
     
 with DAG(
-    dag_id = "update_db_chess",
+    dag_id = "profile_update_db_bronze_silver",
     default_args=default_args,
-    description="DAG to process JSON file and insert data into staging schema (future do core schema)",
+    description="DAG to process JSON file and insert data into bronze layer and silver schema (future do core schema)",
     schedule = "0 15 * * *",
     catchup = False
 ) as dag:
-    update_staging = silver_table()
-    #later add other layers
-    # Define task dependencies
+    bronze = bronze_table()
+    silver = silver_table()
+
+    bronze >> silver   # dependency
     
 with DAG(
     dag_id = "players_games_stats",

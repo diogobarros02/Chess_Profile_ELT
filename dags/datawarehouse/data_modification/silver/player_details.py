@@ -24,7 +24,7 @@ def insert_rows(cur,conn,schema,row):
                     verified,
                     league,
                     streaming_platforms
-                ) VALUES (%(player_id)s, %(@id)s, %(url)s, %(name)s, %(username)s, %(followers)s, %(country)s, %(last_online)s, %(joined)s, %(status)s, %(is_streamer)s, %(verified)s, %(league)s, %(streaming_platforms)s)
+                ) VALUES (%(player_id)s, %(player_url_id)s, %(url)s, %(name)s, %(username)s, %(followers)s, %(country)s, %(last_online)s, %(joined)s, %(status)s, %(is_streamer)s, %(verified)s, %(league)s, %(streaming_platforms)s)
                 ON CONFLICT (player_id) DO NOTHING;
                 """, row
             )
@@ -44,12 +44,12 @@ def update_rows(cur, conn, schema, row):
                 f"""
                 UPDATE {schema}.{table}
                 SET
-                    player_url_id = %(@id)s,
+                    player_url_id = %(@player_url_id)s,
                     url = %(url)s,
                     name = %(name)s,
                     username = %(username)s,
                     followers = %(followers)s,
-                    country_url = %(country)s,
+                    country_url = %(country_url)s,
                     last_online = %(last_online)s,
                     joined = %(joined)s,
                     status = %(status)s,

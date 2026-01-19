@@ -1,35 +1,52 @@
+import json
 from datetime import datetime, timezone
+import logging
+
+logger = logging.getLogger(__name__)
 
 def transform_row(row: dict) -> dict:
     """
     Applies all transformations to a single row:
-    1. Maps country URL to full country name.
+    1. Maps Chess.com country URL to full country name.
     2. Converts timestamps (last_online, joined) to UTC datetime.
+    3. Serializes dict fields to JSON.
     """
+
     # --- Country mapping ---
-    country_url = row.get("country_url", "")
+    country_url = row.get("country_url") or row.get("country")
+
+    common_countries = {
+        "PT": "Portugal",
+        "US": "United States",
+        "RU": "Russia",
+        "IN": "India",
+        "CN": "China",
+        "DE": "Germany",
+        "FR": "France",
+        "GB": "United Kingdom",
+        "BR": "Brazil",
+        "ES": "Spain",
+    }
+
     if country_url:
-        country_code = country_url.split("/")[-1].upper()
-        common_countries = {
-            "PT": "Portugal",
-            "US": "United States",
-            "RU": "Russia",
-            "IN": "India",
-            "CN": "China",
-            "DE": "Germany",
-            "FR": "France",
-            "GB": "United Kingdom",
-            "BR": "Brazil",
-            "ES": "Spain"
-        }
-        row["country"] = common_countries.get(country_code, country_code)
+        country_code = country_url.rstrip("/").split("/")[-1].upper()
+        row["country"] = common_countries.get(country_code)
     else:
         row["country"] = None
 
     # --- Timestamp transformation ---
-    if "last_online" in row and row["last_online"] is not None:
-        row["last_online"] = datetime.fromtimestamp(row["last_online"], tz=timezone.utc)
-    if "joined" in row and row["joined"] is not None:
-        row["joined"] = datetime.fromtimestamp(row["joined"], tz=timezone.utc)
+    if row.get("last_online") is not None:
+        row["last_online"] = datetime.fromtimestamp(
+            int(row["last_online"]), tz=timezone.utc
+        )
+
+    if row.get("joined") is not None:
+        row["joined"] = datetime.fromtimestamp(
+            int(row["joined"]), tz=timezone.utc
+        )
+
+    # --- Dict → JSON ---
+    if isinstance(row.get("streaming_platforms"), dict):
+        row["streaming_platforms"] = json.dumps(row["streaming_platforms"])
 
     return row

@@ -36,3 +36,10 @@ def get_player_ids(cur, schema):
     ids = cur.fetchall()
     player_ids = [row['player_id'] for row in ids]
     return player_ids
+
+def fetch_bronze_rows(cur, bronze_schema):
+    cur.execute(f"""
+        SELECT *
+        FROM {bronze_schema}.player_details
+    """)
+    return cur.fetchall()
