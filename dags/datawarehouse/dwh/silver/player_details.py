@@ -1,7 +1,6 @@
 from datawarehouse.data_utils.conn import get_conn_cursor, close_conn_cursor, create_schema
 from datawarehouse.data_utils.silver.player_details import create_table, get_player_ids, fetch_bronze_rows
 from datawarehouse.data_modification.silver.player_details import insert_rows, update_rows, delete_rows
-from datawarehouse.data_loading.bronze.player_details import load_path
 from datawarehouse.data_transformation.bronze.player_details import transform_row
 import logging
 from airflow.decorators import dag, task

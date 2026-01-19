@@ -18,7 +18,7 @@ def extract_usernames_from_db():
     records = hook.get_records(
         """
         SELECT username
-        FROM staging.player_details
+        FROM bronze.player_details
         WHERE username IS NOT NULL
         """
     )
@@ -49,7 +49,7 @@ def save_raw_stats(stats: dict):
 
     os.makedirs("/opt/airflow/data", exist_ok=True)
 
-    file_path = f"/opt/airflow/data/chess_player_stats_{datetime.now().date()}.json"
+    file_path = f"/opt/airflow/data/chess_player_stats/{datetime.now().date()}.json"
 
     with open(file_path , "w", encoding="utf-8") as json_file:
         json.dump(stats, json_file, ensure_ascii=False, indent=4)

@@ -1,11 +1,11 @@
 import json
-from datetime import date
+from datetime import date, datetime
 import logging
 
 logger = logging.getLogger(__name__)
 
 def load_path():
-    file_path = f"/opt/airflow/data/chess_players_{date.today()}.json"
+    file_path = f"/opt/airflow/data/chess_players/{datetime.now().date()}.json"
     try:
         with open(file_path, "r", encoding="utf-8") as raw_data:
             data = json.load(raw_data)

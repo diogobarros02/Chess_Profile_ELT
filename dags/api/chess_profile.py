@@ -3,7 +3,7 @@ import json
 import os
 import time
 from dotenv import load_dotenv
-from datetime import date
+from datetime import date, datetime
 
 from airflow.decorators import dag, task
 from airflow.models import Variable
@@ -31,7 +31,7 @@ def player_details(usernames: list[str]):
 def save_to_json(players: list[dict]):
     os.makedirs("/opt/airflow/data", exist_ok=True)
 
-    file_path = f"/opt/airflow/data/chess_players_{date.today()}.json"
+    file_path = f"/opt/airflow/data/chess_players/{datetime.now().date()}.json"
 
     with open(file_path, "w", encoding="utf-8") as json_file:
         json.dump(players, json_file, ensure_ascii=False, indent=4)

@@ -29,6 +29,8 @@ default_args = {
     "end_date": None,
 }
 
+
+############## player details DAGs ##############
 with DAG(
     dag_id = "profile_produce_json",
     default_args=default_args,
@@ -54,7 +56,10 @@ with DAG(
     silver = silver_table()
 
     bronze >> silver   # dependency
-    
+
+
+############## player stats DAGs ##############
+
 with DAG(
     dag_id = "players_games_stats",
     default_args=default_args,
@@ -66,3 +71,16 @@ with DAG(
     stats = fetch_player_stats(usernames)
     saved_stats = save_raw_stats(stats)
     usernames >> stats >> saved_stats    
+
+
+with DAG(
+    dag_id = "profile_update_db_bronze_silver",
+    default_args=default_args,
+    description="DAG to process JSON file and insert data into bronze layer and silver schema (future do core schema)",
+    schedule = "0 15 * * *",
+    catchup = False
+) as dag:
+    bronze = bronze_table()
+    silver = silver_table()
+
+    bronze >> silver   # dependency
