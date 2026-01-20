@@ -6,6 +6,8 @@ from airflow.decorators import dag, task
 from airflow.models import Variable
 from datawarehouse.dwh.bronze.player_details import bronze_table
 from datawarehouse.dwh.silver.player_details import silver_table
+from datawarehouse.dwh.bronze.player_stats import bronze_table_stats
+from datawarehouse.dwh.silver.player_stats import silver_table_stats
 from api.player_stats import extract_usernames_from_db, fetch_player_stats, save_raw_stats
 
 local_time = pendulum.timezone("Europe/Budapest")
@@ -80,7 +82,7 @@ with DAG(
     schedule = "0 15 * * *",
     catchup = False
 ) as dag:
-    bronze = bronze_table()
-    silver = silver_table()
+    bronze = bronze_table_stats()
+    silver = silver_table_stats()
 
     bronze >> silver   # dependency

@@ -38,7 +38,7 @@ def fetch_player_stats(usernames: list[str]):
 
     for username in usernames:
         url = f"https://api.chess.com/pub/player/{username}/stats"
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers) 
         response.raise_for_status()
         all_stats[username] = response.json()
 
