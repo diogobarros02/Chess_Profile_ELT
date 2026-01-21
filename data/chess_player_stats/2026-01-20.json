@@ -91,10 +91,6 @@
             "best": {
                 "total_attempts": 50,
                 "score": 47
-            },
-            "daily": {
-                "total_attempts": 29,
-                "score": 26
             }
         }
     },

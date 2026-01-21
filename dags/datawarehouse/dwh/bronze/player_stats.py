@@ -28,7 +28,7 @@ def bronze_table_stats():
 
         # Ensure schema and table exist
         create_schema(schema)
-        create_table_stats(schema)b 
+        create_table_stats(schema)
 
         # Insert each row as-is
         for row in chess_data:

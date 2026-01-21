@@ -1,7 +1,6 @@
 from datawarehouse.data_utils.conn import get_conn_cursor, close_conn_cursor, create_schema
-from datawarehouse.data_utils.silver.player_details import create_table, get_player_ids, fetch_bronze_rows
-from datawarehouse.data_modification.silver.player_details import insert_rows, update_rows, delete_rows
-from datawarehouse.data_transformation.bronze.player_details import transform_row
+from datawarehouse.data_utils.silver.player_stats import create_table_stats, get_player_ids
+from datawarehouse.data_modification.silver.player_stats import insert_rows, update_rows, delete_rows
 import logging
 from airflow.decorators import dag, task
 from datetime import datetime, timezone
@@ -13,7 +12,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
 
 logger = logging.getLogger(__name__)
-table = "player_details"
+table = "player_stats"
 
 @task
 def silver_table_stats():
