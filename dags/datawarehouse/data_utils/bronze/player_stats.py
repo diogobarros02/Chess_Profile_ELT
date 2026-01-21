@@ -8,7 +8,7 @@ def create_table_stats(schema):
     
     if schema == 'bronze':
         create_table_query = f"""
-        CREATE TABLE IF NOT EXISTS {schema}.player_stats (  
+        CREATE TABLE IF NOT EXISTS {schema}.{table} (  
             username TEXT PRIMARY KEY,
             -- chess_daily
             chess_daily_last_rating INT,

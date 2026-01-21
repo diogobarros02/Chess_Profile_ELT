@@ -27,8 +27,8 @@
         },
         "chess_rapid": {
             "last": {
-                "rating": 1845,
-                "date": 1768858409,
+                "rating": 1828,
+                "date": 1768999906,
                 "rd": 35
             },
             "best": {
@@ -38,15 +38,15 @@
             },
             "record": {
                 "win": 1441,
-                "loss": 1272,
+                "loss": 1274,
                 "draw": 159
             }
         },
         "chess_bullet": {
             "last": {
-                "rating": 1617,
-                "date": 1768816843,
-                "rd": 68
+                "rating": 1654,
+                "date": 1768988060,
+                "rd": 63
             },
             "best": {
                 "rating": 1854,
@@ -54,8 +54,8 @@
                 "game": "https://www.chess.com/game/live/64861309945"
             },
             "record": {
-                "win": 1776,
-                "loss": 1719,
+                "win": 1780,
+                "loss": 1720,
                 "draw": 174
             }
         },

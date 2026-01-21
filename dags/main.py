@@ -8,6 +8,8 @@ from datawarehouse.dwh.bronze.player_details import bronze_table
 from datawarehouse.dwh.silver.player_details import silver_table
 from datawarehouse.dwh.bronze.player_stats import bronze_table_stats
 from datawarehouse.dwh.silver.player_stats import silver_table_stats
+from datawarehouse.dwh.bronze.player_games import bronze_table_player_games
+from datawarehouse.dwh.silver.player_games import silver_table_player_games
 from api.player_stats import extract_usernames_from_db, fetch_player_stats, save_raw_stats
 from api.player_games import fetch_current_month_games, save_raw_games, extract_usernames_from_db_for_games
 
@@ -101,3 +103,15 @@ with DAG(
     games = fetch_current_month_games(usernames)
     saved_games = save_raw_games(games)
     usernames >> games >> saved_games
+
+with DAG(
+    dag_id = "profile_games_db_bronze_silver",
+    default_args=default_args,
+    description="DAG to process JSON file and insert data into bronze layer and silver schema (future do core schema)",
+    schedule = "0 15 * * *",
+    catchup = False
+) as dag:
+    bronze = bronze_table_player_games()
+    silver = silver_table_player_games()
+
+    bronze >> silver   # dependency
