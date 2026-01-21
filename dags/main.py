@@ -9,6 +9,7 @@ from datawarehouse.dwh.silver.player_details import silver_table
 from datawarehouse.dwh.bronze.player_stats import bronze_table_stats
 from datawarehouse.dwh.silver.player_stats import silver_table_stats
 from api.player_stats import extract_usernames_from_db, fetch_player_stats, save_raw_stats
+from api.player_games import fetch_current_month_games, save_raw_games, extract_usernames_from_db_for_games
 
 local_time = pendulum.timezone("Europe/Budapest")
 
@@ -86,3 +87,17 @@ with DAG(
     silver = silver_table_stats()
 
     bronze >> silver   # dependency
+
+############### player games ###############
+
+with DAG(
+    dag_id = "players_games_details",
+    default_args=default_args,
+    description="DAG to fetch chess.com players games",
+    schedule = "0 15 * * *",
+    catchup = False
+ ) as dag :
+    usernames = extract_usernames_from_db_for_games()
+    games = fetch_current_month_games(usernames)
+    saved_games = save_raw_games(games)
+    usernames >> games >> saved_games
