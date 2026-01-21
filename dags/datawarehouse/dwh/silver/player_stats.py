@@ -1,6 +1,7 @@
 from datawarehouse.data_utils.conn import get_conn_cursor, close_conn_cursor, create_schema
-from datawarehouse.data_utils.silver.player_stats import create_table_stats, get_player_ids
+from datawarehouse.data_utils.silver.player_stats import create_table_stats, get_player_username, fetch_bronze_rows_stats
 from datawarehouse.data_modification.silver.player_stats import insert_rows, update_rows, delete_rows
+from datawarehouse.data_transformation.bronze.player_stats import transform_row_stats
 import logging
 from airflow.decorators import dag, task
 from datetime import datetime, timezone
@@ -24,29 +25,30 @@ def silver_table_stats():
         conn, cur = get_conn_cursor()
 
         # 1️⃣ Read FROM BRONZE
-        bronze_rows = fetch_bronze_rows(cur, bronze_schema)
+        bronze_rows = fetch_bronze_rows_stats(cur, bronze_schema)
 
         # 2️⃣ Transform
-        silver_rows = [transform_row(row) for row in bronze_rows]
+        silver_rows = [transform_row_stats(row) for row in bronze_rows]
 
         # 3️⃣ Ensure schema & table
         create_schema(schema)
-        create_table(schema)
+        create_table_stats(schema)
 
         # 4️⃣ UPSERT logic
-        existing_ids = set(get_player_ids(cur, schema))
+        existing_username = set(get_player_username(cur, schema))
 
-        incoming_ids = set()
+        incoming_names = set()
         for row in silver_rows:
-            incoming_ids.add(row["player_id"])
+            username = row["username"]
+            incoming_names.add(username)
 
-            if row["player_id"] in existing_ids:
+            if username in existing_username:
                 update_rows(cur, conn, schema, row)
             else:
                 insert_rows(cur, conn, schema, row)
 
         # 5️⃣ Delete missing rows
-        ids_to_delete = existing_ids - incoming_ids
+        ids_to_delete = existing_username - incoming_names
         if ids_to_delete:
             delete_rows(cur, conn, schema, ids_to_delete)
 

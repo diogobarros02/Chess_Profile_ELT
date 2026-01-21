@@ -61,8 +61,8 @@ def insert_rows(cur,conn,schema,row):
                     puzzle_rush_best_total_attempts,
                     puzzle_rush_best_score,
                     puzzle_rush_daily_total_attempts,
-                    puzzle_rush_daily_score,
-               ) VALUES (
+                    puzzle_rush_daily_score
+                ) VALUES (
                 %(username)s,
                 %(chess_daily_last_rating)s,
                 %(chess_daily_last_date)s,
@@ -184,39 +184,39 @@ def update_rows(cur, conn, schema, row):
                     puzzle_rush_best_score = %(puzzle_rush_best_score)s,
                     puzzle_rush_daily_total_attempts = %(puzzle_rush_daily_total_attempts)s,
                     puzzle_rush_daily_score = %(puzzle_rush_daily_score)s
-                WHERE player_id = %(player_id)s;
+                WHERE username = %(username)s;
                 """,
                 row
             )
 
         conn.commit()
         logger.info(
-            f"✅ Row with player_id {row['username']} updated successfully in {schema}.{table}"
+            f"✅ Row with username {row['username']} updated successfully in {schema}.{table}"
         )
 
     except Exception as e:
         logger.error(
-            f"❌ Error updating row with player_id {row['username']} in {schema}.{table}: {e}"
+            f"❌ Error updating row with username {row['username']} in {schema}.{table}: {e}"
         )
         raise
 
-def delete_rows(cur, conn, schema, player_ids):
+def delete_rows(cur, conn, schema, username):
     try:
         cur.execute(
             f"""
             DELETE FROM {schema}.{table}
-            WHERE player_id = ANY(%s);
+            WHERE username = ANY(%s);
             """,
-            (player_ids,)
+            (username,)
         )
 
         conn.commit()
         logger.info(
-            f"✅ Rows with player_id {player_ids} deleted successfully from {schema}.{table}"
+            f"✅ Rows with username {username} deleted successfully from {schema}.{table}"
         )
 
     except Exception as e:
         logger.error(
-            f"❌ Error deleting rows with player_id {player_ids} from {schema}.{table}: {e}"
+            f"❌ Error deleting rows with username {username} from {schema}.{table}: {e}"
         )
         raise 
